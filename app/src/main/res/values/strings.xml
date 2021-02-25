@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Cat Fact</string>
+    <string name="welcome">Доброго времени суток! Если хотите узнать факты о кошках нажмите кнопку загрузки на экшн баре</string>
+</resources>

@@ -1,0 +1,72 @@
+package xyz.ramil.catfact;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+
+import moxy.MvpAppCompatActivity;
+import moxy.presenter.InjectPresenter;
+import xyz.ramil.catfact.adapter.Adapter;
+import xyz.ramil.catfact.model.Facts;
+
+public class MainActivity   extends MvpAppCompatActivity implements MainView  {
+
+    Adapter adapter;
+
+    ArrayList<Facts> facts = new ArrayList<>();
+
+    TextView textView;
+
+    @InjectPresenter
+    MainPresenter presenter;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        textView = (TextView) findViewById(R.id.tvWelcome);
+
+        RecyclerView recyclerView = findViewById(R.id.rvFacts);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new Adapter(this, facts);
+        adapter.setHasStableIds(true);
+        recyclerView.setAdapter(adapter);
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.download:
+                textView.setVisibility(View.GONE);
+                presenter.loadData();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void update(Facts model) {
+        facts.add(model);
+        adapter.notifyItemChanged(adapter.getItemCount()-1);
+
+    }
+}
