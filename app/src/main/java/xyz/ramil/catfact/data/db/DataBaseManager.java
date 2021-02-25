@@ -5,7 +5,9 @@ import android.content.Context;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.concurrent.Executors;
 
+import rx.schedulers.Schedulers;
 import xyz.ramil.catfact.data.model.CatFactModel;
 
 public class DataBaseManager {
@@ -16,24 +18,33 @@ public class DataBaseManager {
 
     CatFactModel catFactModel;
 
-    AppDatabase initializeDB(Context context) {
-        return AppDatabase.appDatabase.getAppDatabase(context);
+     AppDatabase initializeDB(Context context) {
+        return AppDatabase.getAppDatabase(context);
     }
 
-    void insertData(Context context, CatFactModel catFactModel) {
+  public   void insertData(Context context, CatFactModel catFactModel) {
         appDatabase = initializeDB(context);
         //вывести в рабочий поток
-            appDatabase.catFactDao().insertData(catFactModel);
+
+
+      Executors.newSingleThreadExecutor().execute(new Runnable() {
+          @Override
+          public void run() {
+              appDatabase.catFactDao().insertData(catFactModel);
+          }
+      });
+
+
 
     }
 
-    LiveData<List<CatFactModel>> getData(Context context) {
+    public  LiveData<List<CatFactModel>> getData(Context context) {
         appDatabase = initializeDB(context);
         data = appDatabase.catFactDao().getAll();
         return data;
     }
 
-    void delete(Context context, CatFactModel catFactModel) {
+    public void delete(Context context, CatFactModel catFactModel) {
         appDatabase = initializeDB(context);
         appDatabase.catFactDao().delete(catFactModel);
     }

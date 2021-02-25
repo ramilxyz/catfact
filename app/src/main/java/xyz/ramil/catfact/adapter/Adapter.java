@@ -16,16 +16,17 @@ import java.util.List;
 
 import xyz.ramil.catfact.R;
 import xyz.ramil.catfact.data.db.DataBaseManager;
+import xyz.ramil.catfact.data.model.CatFactModel;
 import xyz.ramil.catfact.model.Facts;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
-    private List<Facts> facts;
+    private List<CatFactModel> facts;
     private LayoutInflater inflater;
     private ItemClickListener clickListener;
     private Context context;
 
-    public Adapter(Context context, List<Facts> data) {
+    public Adapter(Context context, List<CatFactModel> data) {
         this.inflater = LayoutInflater.from(context);
         this.context = context;
         this.facts = data;
@@ -39,11 +40,11 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Facts animal = facts.get(position);
-        holder.textView.setText(animal.getType());
-        holder.textDescription.setText(animal.getText());
+        CatFactModel animal = facts.get(position);
+        holder.textView.setText(animal.type);
+        holder.textDescription.setText(animal.fact);
         Glide.with(this.context)
-                .load("https://cataas.com/cat")
+                .load(animal.cat)
                 .circleCrop()
                 .signature(new ObjectKey(System.currentTimeMillis()))
                 .into(holder.imageView);
@@ -56,7 +57,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         return facts.size();
     }
 
-    Facts getItem(int id) {
+    CatFactModel getItem(int id) {
         return facts.get(id);
     }
 

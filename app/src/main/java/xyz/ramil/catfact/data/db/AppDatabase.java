@@ -7,20 +7,23 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import xyz.ramil.catfact.BaseApp;
+import xyz.ramil.catfact.data.model.CatFactModel;
 
-@Database(entities = {CatFactDao.class}, version = 1)
+@Database(entities = {CatFactModel.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract CatFactDao catFactDao();
 
     public static AppDatabase appDatabase;
 
-    AppDatabase getAppDatabase (Context context) {
+    public  static AppDatabase getAppDatabase(Context context) {
 
-        if(appDatabase == null)
-           appDatabase = Room.databaseBuilder(context,
-                    AppDatabase.class, "database-name").build();
+            if(appDatabase == null)
+                appDatabase = Room.databaseBuilder(context, AppDatabase.class, "database-name").build();
 
-        return appDatabase;
+            return appDatabase;
+
+
+
     }
 
 

@@ -15,13 +15,14 @@ import java.util.ArrayList;
 import moxy.MvpAppCompatActivity;
 import moxy.presenter.InjectPresenter;
 import xyz.ramil.catfact.adapter.Adapter;
+import xyz.ramil.catfact.data.model.CatFactModel;
 import xyz.ramil.catfact.model.Facts;
 
 public class MainActivity extends MvpAppCompatActivity implements MainView {
 
     Adapter adapter;
 
-    ArrayList<Facts> facts = new ArrayList<>();
+    ArrayList<CatFactModel> facts = new ArrayList<>();
 
     TextView textView;
 
@@ -32,6 +33,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         textView = (TextView) findViewById(R.id.tvWelcome);
 
@@ -55,7 +57,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         switch (item.getItemId()) {
             case R.id.download:
                 textView.setVisibility(View.GONE);
-                presenter.loadData();
+                presenter.loadData(getApplicationContext());
                 return true;
 
             default:
@@ -64,7 +66,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     }
 
     @Override
-    public void update(Facts model) {
+    public void update(CatFactModel model) {
         facts.add(model);
         adapter.notifyItemChanged(adapter.getItemCount() - 1);
 
