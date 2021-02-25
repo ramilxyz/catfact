@@ -20,6 +20,7 @@ public class MainPresenter extends MvpPresenter<MainView> {
                     public void onSuccess(Facts model) {
                         getViewState().update(model);
                     }
+
                     @Override
                     public void onError(Throwable e) {
                         Log.d("LoadFacts::Throwable", e.getLocalizedMessage());

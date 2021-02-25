@@ -1,7 +1,6 @@
 package xyz.ramil.catfact;
 
 import android.app.Application;
-import android.content.Intent;
 
 import dagger.Module;
 
@@ -30,7 +29,7 @@ public class BaseApp extends Application {
     private AppComponent buildComponent() {
         return DaggerAppComponent
                 .builder()
-                .application((BaseApp)getApplicationContext())
+                .application((BaseApp) getApplicationContext())
                 .build();
     }
 }

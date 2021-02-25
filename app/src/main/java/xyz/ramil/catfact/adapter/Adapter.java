@@ -1,7 +1,6 @@
 package xyz.ramil.catfact.adapter;
 
 import android.content.Context;
-import android.content.pm.Signature;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +10,9 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.Key;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.signature.ObjectKey;
 
 import java.util.List;
-import java.util.UUID;
 
 import xyz.ramil.catfact.R;
 import xyz.ramil.catfact.model.Facts;

@@ -11,9 +11,10 @@ public interface AppComponent {
     void inject(BaseApp app);
 
     @Component.Builder
-    interface Builder{
+    interface Builder {
         @BindsInstance
         Builder application(BaseApp app);
+
         AppComponent build();
     }
 }
