@@ -15,6 +15,7 @@ import com.bumptech.glide.signature.ObjectKey;
 import java.util.List;
 
 import xyz.ramil.catfact.R;
+import xyz.ramil.catfact.data.db.DataBaseManager;
 import xyz.ramil.catfact.model.Facts;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
@@ -46,6 +47,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                 .circleCrop()
                 .signature(new ObjectKey(System.currentTimeMillis()))
                 .into(holder.imageView);
+
+
     }
 
     @Override
