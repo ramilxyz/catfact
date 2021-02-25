@@ -3,6 +3,15 @@ package xyz.ramil.catfact;
 import android.content.Context;
 import android.util.Log;
 
+import com.google.android.gms.common.util.IOUtils;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
@@ -16,6 +25,8 @@ public class MainPresenter extends MvpPresenter<MainView> {
 
     DataBaseManager dataBaseManager = new DataBaseManager();
 
+    CatFactModel catFactModel;
+
     public void loadData(Context context) {
         new ApiManager().getFact()
                 .subscribeOn(Schedulers.io())
@@ -25,27 +36,30 @@ public class MainPresenter extends MvpPresenter<MainView> {
                     public void onSuccess(Facts model) {
 
 
-                        CatFactModel catFactModel = new CatFactModel();
-                        catFactModel.cat = new byte[] {0};
+                        catFactModel  = new CatFactModel();
                         catFactModel.fact = model.getText();
                         catFactModel.type = model.getType();
 
-                        dataBaseManager.insertData(context, catFactModel);
+                        Thread thread = new Thread(new Runnable() {
 
-                        Log.d("SSSS", ""+dataBaseManager.getData(context).getValue())
+                            @Override
+                            public void run() {
+                                try  {
+                                    catFactModel.cat = getLogoImage("https://cataas.com/cat");
+                                    Log.d("SSSSS", ""+getLogoImage("https://cataas.com/cat"));
+                                    dataBaseManager.insertData(context, catFactModel);
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+
+                        thread.start();
 
 
 
 
-
-
-
-//                                Glide.with(context)
-//                                .load("https://cataas.com/cat")
-//                                .circleCrop()
-//                                .signature(new ObjectKey(System.currentTimeMillis()))
-//                                .into(holder.imageView);
-                        ;
 
                     }
 
@@ -54,5 +68,38 @@ public class MainPresenter extends MvpPresenter<MainView> {
                         Log.d("LoadFacts::Throwable", e.getLocalizedMessage());
                     }
                 });
+    }
+
+
+    public DataBaseManager getDataBaseManager() {
+        return dataBaseManager;
+    }
+
+    private byte[] getLogoImage(String url) {
+
+        try {
+
+            URL imageUrl = new URL(url);
+            URLConnection ucon = imageUrl.openConnection();
+
+            InputStream is = ucon.getInputStream();
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int read = 0;
+
+            while ((read = is.read(buffer, 0, buffer.length)) != -1) {
+                baos.write(buffer, 0, read);
+            }
+
+            baos.flush();
+
+            return  baos.toByteArray();
+
+        } catch (Exception e) {
+            Log.d("ImageManager", "Error: " + e.toString());
+        }
+
+        return null;
     }
 }

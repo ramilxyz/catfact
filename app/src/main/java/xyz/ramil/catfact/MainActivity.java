@@ -1,16 +1,20 @@
 package xyz.ramil.catfact;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import moxy.MvpAppCompatActivity;
 import moxy.presenter.InjectPresenter;
@@ -22,7 +26,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
 
     Adapter adapter;
 
-    ArrayList<CatFactModel> facts = new ArrayList<>();
+    List<CatFactModel> facts = new ArrayList<>();
 
     TextView textView;
 
@@ -42,6 +46,16 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         adapter = new Adapter(this, facts);
         adapter.setHasStableIds(true);
         recyclerView.setAdapter(adapter);
+
+        presenter.getDataBaseManager().getData(this).observe(this, new Observer<List<CatFactModel>>() {
+
+            @Override
+            public void onChanged(List<CatFactModel> catFactModels) {
+               facts.addAll(catFactModels);
+               adapter.notifyDataSetChanged();
+            }
+        });
+
 
     }
 
@@ -67,8 +81,8 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
 
     @Override
     public void update(CatFactModel model) {
-        facts.add(model);
-        adapter.notifyItemChanged(adapter.getItemCount() - 1);
+
+
 
     }
 }

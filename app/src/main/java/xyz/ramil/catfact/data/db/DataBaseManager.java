@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 import java.util.concurrent.Executors;
+import java.util.logging.Handler;
 
 import rx.schedulers.Schedulers;
 import xyz.ramil.catfact.data.model.CatFactModel;
@@ -24,15 +25,11 @@ public class DataBaseManager {
 
   public   void insertData(Context context, CatFactModel catFactModel) {
         appDatabase = initializeDB(context);
-        //вывести в рабочий поток
 
 
-      Executors.newSingleThreadExecutor().execute(new Runnable() {
-          @Override
-          public void run() {
               appDatabase.catFactDao().insertData(catFactModel);
-          }
-      });
+
+
 
 
 

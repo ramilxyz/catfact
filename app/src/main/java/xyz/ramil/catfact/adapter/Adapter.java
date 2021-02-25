@@ -1,6 +1,7 @@
 package xyz.ramil.catfact.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+
+        Log.d("SSSSSSSSS", "SSS"+facts.size());
         CatFactModel animal = facts.get(position);
         holder.textView.setText(animal.type);
         holder.textDescription.setText(animal.fact);
