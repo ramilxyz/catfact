@@ -66,9 +66,6 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
                     facts.add(catFactModels.get(catFactModels.size()-1));
                     adapter.notifyItemChanged(adapter.getItemCount()-1);
                 }
-
-
-
             }
         });
 
@@ -92,12 +89,5 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    @Override
-    public void update(CatFactModel model) {
-
-
-
     }
 }
