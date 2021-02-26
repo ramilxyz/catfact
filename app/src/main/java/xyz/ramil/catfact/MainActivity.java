@@ -72,7 +72,6 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
                 if(!catFactModels.isEmpty())
                     textView.setVisibility(View.GONE);
                 if(facts.isEmpty()) {
-                    textView.setVisibility(View.VISIBLE);
                 facts.addAll(catFactModels);
                     adapter.notifyDataSetChanged();
                 } else {
