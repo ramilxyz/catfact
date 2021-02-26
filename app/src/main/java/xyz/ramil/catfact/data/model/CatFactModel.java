@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey;
 public class CatFactModel {
     @PrimaryKey
     @NonNull
+    public long id;
     public byte [] cat;
     public String fact;
     public String type;

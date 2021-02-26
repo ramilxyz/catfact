@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.UUID;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableSingleObserver;
@@ -37,6 +38,7 @@ public class MainPresenter extends MvpPresenter<MainView> {
 
 
                         catFactModel  = new CatFactModel();
+                        catFactModel.id = System.nanoTime();
                         catFactModel.fact = model.getText();
                         catFactModel.type = model.getType();
 
@@ -46,7 +48,6 @@ public class MainPresenter extends MvpPresenter<MainView> {
                             public void run() {
                                 try  {
                                     catFactModel.cat = getLogoImage("https://cataas.com/cat");
-                                    Log.d("SSSSS", ""+getLogoImage("https://cataas.com/cat"));
                                     dataBaseManager.insertData(context, catFactModel);
 
                                 } catch (Exception e) {
@@ -56,10 +57,6 @@ public class MainPresenter extends MvpPresenter<MainView> {
                         });
 
                         thread.start();
-
-
-
-
 
                     }
 
