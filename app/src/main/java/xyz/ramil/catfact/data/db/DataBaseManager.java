@@ -25,14 +25,7 @@ public class DataBaseManager {
 
   public   void insertData(Context context, CatFactModel catFactModel) {
         appDatabase = initializeDB(context);
-
-
               appDatabase.catFactDao().insertData(catFactModel);
-
-
-
-
-
     }
 
     public  LiveData<List<CatFactModel>> getData(Context context) {
@@ -43,6 +36,10 @@ public class DataBaseManager {
 
     public void delete(Context context, CatFactModel catFactModel) {
         appDatabase = initializeDB(context);
-        appDatabase.catFactDao().delete(catFactModel);
+       new Thread(new Runnable() {
+            @Override
+            public void run() {
+                appDatabase.catFactDao().delete(catFactModel);
+            }});
     }
 }

@@ -27,10 +27,11 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     private ItemClickListener clickListener;
     private Context context;
 
-    public Adapter(Context context, List<CatFactModel> data) {
+    public Adapter(Context context, List<CatFactModel> data, ItemClickListener itemClickListener) {
         this.inflater = LayoutInflater.from(context);
         this.context = context;
         this.facts = data;
+        clickListener = itemClickListener;
     }
 
     @Override
@@ -41,8 +42,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-
-        Log.d("SSSSSSSSS", "SSS"+facts.size());
         CatFactModel animal = facts.get(position);
         holder.textView.setText(animal.type);
         holder.textDescription.setText(animal.fact);

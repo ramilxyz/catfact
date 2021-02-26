@@ -43,14 +43,25 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         textView = (TextView) findViewById(R.id.tvWelcome);
 
         RecyclerView recyclerView = findViewById(R.id.rvFacts);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new Adapter(this, facts);
+        adapter = new Adapter(this, facts, new Adapter.ItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+
+                Log.d("SSSSSS", ""+facts.get(position));
+
+                presenter.getDataBaseManager().delete(MainActivity.this.getApplicationContext(), facts.get(position));
+//                adapter.notifyItemRemoved(position);
+
+
+            }
+        });
         adapter.setHasStableIds(true);
         recyclerView.setAdapter(adapter);
+
 
         presenter.getDataBaseManager().getData(this).observe(this, new Observer<List<CatFactModel>>() {
 
