@@ -9,4 +9,6 @@ import xyz.ramil.catfact.model.Facts;
 @StateStrategyType(value = OneExecutionStateStrategy.class)
 public interface MainView extends MvpView {
 
+    void lockView(boolean is);
+
 }

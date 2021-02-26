@@ -29,6 +29,7 @@ public class MainPresenter extends MvpPresenter<MainView> {
     CatFactModel catFactModel;
 
     public void loadData(Context context) {
+        getViewState().lockView(true);
         new ApiManager().getFact()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -57,12 +58,14 @@ public class MainPresenter extends MvpPresenter<MainView> {
                         });
 
                         thread.start();
+                        getViewState().lockView(false);
 
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         Log.d("LoadFacts::Throwable", e.getLocalizedMessage());
+                        getViewState().lockView(false);
                     }
                 });
     }

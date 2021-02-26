@@ -1,5 +1,6 @@
 package xyz.ramil.catfact;
 
+import android.content.ClipData;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -39,6 +40,8 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     MainPresenter presenter;
 
     boolean isRemove = false;
+
+    MenuItem item;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +99,9 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        this.item = item;
+
+
         switch (item.getItemId()) {
             case R.id.download:
                 presenter.loadData(getApplicationContext());
@@ -104,5 +110,11 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void lockView(boolean is) {
+        item.setVisible(!is);
+
     }
 }
