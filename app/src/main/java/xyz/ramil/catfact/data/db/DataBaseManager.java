@@ -36,10 +36,11 @@ public class DataBaseManager {
 
     public void delete(Context context, CatFactModel catFactModel) {
         appDatabase = initializeDB(context);
-       new Thread(new Runnable() {
+        Thread thread =   new Thread(new Runnable() {
             @Override
             public void run() {
                 appDatabase.catFactDao().delete(catFactModel);
             }});
+        thread.start();
     }
 }

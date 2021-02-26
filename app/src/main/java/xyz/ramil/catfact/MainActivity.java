@@ -38,6 +38,8 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     @InjectPresenter
     MainPresenter presenter;
 
+    boolean isRemove = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,11 +52,10 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         adapter = new Adapter(this, facts, new Adapter.ItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-
-                Log.d("SSSSSS", ""+facts.get(position));
-
                 presenter.getDataBaseManager().delete(MainActivity.this.getApplicationContext(), facts.get(position));
-//                adapter.notifyItemRemoved(position);
+                facts.remove(facts.get(position));
+               adapter.notifyItemRemoved(position);
+               isRemove = true;
 
 
             }
@@ -71,11 +72,15 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
                 if(!catFactModels.isEmpty())
                     textView.setVisibility(View.GONE);
                 if(facts.isEmpty()) {
+                    textView.setVisibility(View.VISIBLE);
                 facts.addAll(catFactModels);
                     adapter.notifyDataSetChanged();
                 } else {
-                    facts.add(catFactModels.get(catFactModels.size()-1));
-                    adapter.notifyItemChanged(adapter.getItemCount()-1);
+                    if(!isRemove) {
+                        facts.add(catFactModels.get(catFactModels.size() - 1));
+                        adapter.notifyItemChanged(adapter.getItemCount() - 1);
+                    }
+                    isRemove = false;
                 }
             }
         });
