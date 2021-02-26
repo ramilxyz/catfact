@@ -1,5 +1,6 @@
 package xyz.ramil.catfact;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -9,12 +10,16 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import moxy.MvpAppCompatActivity;
 import moxy.presenter.InjectPresenter;
@@ -49,10 +54,21 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
 
         presenter.getDataBaseManager().getData(this).observe(this, new Observer<List<CatFactModel>>() {
 
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onChanged(List<CatFactModel> catFactModels) {
-               facts.addAll(catFactModels);
-               adapter.notifyDataSetChanged();
+                if(!catFactModels.isEmpty())
+                    textView.setVisibility(View.GONE);
+                if(facts.isEmpty()) {
+                facts.addAll(catFactModels);
+                    adapter.notifyDataSetChanged();
+                } else {
+                    facts.add(catFactModels.get(catFactModels.size()-1));
+                    adapter.notifyItemChanged(adapter.getItemCount()-1);
+                }
+
+
+
             }
         });
 
@@ -70,7 +86,6 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.download:
-                textView.setVisibility(View.GONE);
                 presenter.loadData(getApplicationContext());
                 return true;
 
