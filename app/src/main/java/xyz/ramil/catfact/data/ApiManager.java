@@ -21,16 +21,9 @@ public class ApiManager {
     private ApiService apiService;
 
     public ApiManager() {
-
-        this.updateHost("https://cat-fact.herokuapp.com");
-    }
-
-    public void updateHost(String host) {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
-                .readTimeout(200, TimeUnit.SECONDS)
-                .connectTimeout(200, TimeUnit.SECONDS);
-
-
+                .readTimeout(20, TimeUnit.SECONDS)
+                .connectTimeout(20, TimeUnit.SECONDS);
         httpClient.addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
         httpClient.addInterceptor(new Interceptor() {
             @NotNull
@@ -47,7 +40,7 @@ public class ApiManager {
         });
         OkHttpClient client = httpClient.build();
         Retrofit mRetrofit = new Retrofit.Builder()
-                .baseUrl(host)
+                .baseUrl("https://cat-fact.herokuapp.com")
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(client)
